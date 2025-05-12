@@ -14,9 +14,9 @@ export const authOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET || "mAchIne",
-  // pages: {
-  //   signIn: "/auth",
-  // },
+  pages: {
+    signIn: "/auth",
+  },
   session: { strategy: "jwt" as SessionStrategy },
   callbacks: {
     async jwt({ token }: any) {
