@@ -21,7 +21,7 @@ importers:
   apps/web:
     dependencies:
       '@auth/prisma-adapter':
-        specifier: ^1.5.2
+        specifier: ^1.6.0
         version: 1.6.0(@prisma/client@6.7.0(prisma@6.7.0(typescript@5.8.2))(typescript@5.8.2))
       '@repo/ui':
         specifier: workspace:*

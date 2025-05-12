@@ -11,7 +11,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "^1.5.2",
+    "@auth/prisma-adapter": "^1.6.0",
     "@repo/ui": "workspace:*",
     "next": "^15.3.0",
     "next-auth": "^4.24.11",
@@ -19,9 +19,9 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@repo/db": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@repo/db": "workspace:*",
     "@types/node": "^22.15.3",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",
