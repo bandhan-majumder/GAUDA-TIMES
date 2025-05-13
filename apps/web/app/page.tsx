@@ -10,7 +10,7 @@ export default function Home() {
     <div className="w-full h-full">
       <Appbar />
       <Hero />
-      <div className="bg-[#282536] h-screen">
+      <div className="bg-[#282536]">
       <SearchBar />
       <RecentBlogs />
       </div>

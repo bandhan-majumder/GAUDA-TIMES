@@ -8,9 +8,8 @@ import Image from "next/image";
 import { ModeToggle } from "./ModeToggle";
 
 export const Appbar = () => {
-  const session = useSession();
-  console.log("Session is: ", session);
-  const user = session.data?.user;
+  const { status, data } = useSession();
+  console.log("Status", status);
 
   return (
     <nav className="sticky mx-auto wrapper top-0 z-50 flex items-center gap-2 py-6 w-full">
@@ -27,10 +26,10 @@ export const Appbar = () => {
             T G T
           </span>
         </Link>
-        
+
         <div className="flex items-center gap-4">
           {/* <ModeToggle /> */}
-          {!user ? (
+          {(status === "unauthenticated") ? (
             <Button
               size="lg"
               className="p-2 rounded-xl text-sm  cursor-pointer transform hover:scale-125 hover:opacity-80 transition ease-out duration-300"

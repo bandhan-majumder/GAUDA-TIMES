@@ -37,7 +37,6 @@ export const authOptions = {
     },
   },
 };
-// 
 interface RateLimiter {
   timestamps: Date[];
 }
