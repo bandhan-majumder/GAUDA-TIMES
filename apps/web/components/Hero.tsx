@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Hero() {
     return (
-        <div className="flex justify-center mt-2 md:mt-5 h-screen">
+        <div className="flex justify-center mt-2 md:mt-5 ">
             <div className="flex flex-col gap-12">
                 <div className="font-mono">
                     <p className="text-center text-4xl md:text-6xl text-[#7D68BF] font-semibold">THE GAUDA TIMES</p>
