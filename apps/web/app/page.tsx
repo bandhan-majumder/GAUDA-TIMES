@@ -11,7 +11,7 @@ export default function Home() {
       <Appbar />
       <Hero />
       <div className="bg-[#282536]">
-      <SearchBar />
+      {/* <SearchBar /> */}
       <RecentBlogs />
       </div>
       <Footer />

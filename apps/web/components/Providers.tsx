@@ -1,12 +1,11 @@
 "use client";
+import { SessionProvider } from "../components/SessionProvider";
+import { ReactNode } from "react";
 
-import React from 'react'
-import SessionProvider from './SessionProvider';
-
-export function Providers({ children }: { children: React.ReactNode }) {
-    return (
-        <SessionProvider>
-            {children}
-        </SessionProvider>
-    )
+export function Providers({ children }: { children: ReactNode }) {
+  return (
+    <SessionProvider>
+      {children}
+    </SessionProvider>
+  );
 }

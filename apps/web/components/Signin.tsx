@@ -1,8 +1,8 @@
 "use client";
 import { signIn } from "next-auth/react";;
-
+import { useRouter } from "next/navigation";
 const Signin = () => {
-
+  const router = useRouter();
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <div className="flex flex-col gap-12">
@@ -19,6 +19,7 @@ const Signin = () => {
             className="w-full flex gap-2 p-4 font-medium md:text-lg rounded-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer bg-gradient-to-b from-purple-400 to-blue-900 text-white justify-center items-center"
             onClick={async () => {
               await signIn("google");
+              router.push("/");
             }}
           >
             <svg

@@ -19,42 +19,32 @@ export const authOptions = {
   },
   session: { strategy: "jwt" as SessionStrategy },
   callbacks: {
-    async jwt({ token }: any) {
+    async jwt({ token, user, account }: any) {
+      if (account && user) {
+        return {
+          ...token,
+          accessToken: account.access_token,
+          sub: user.id,
+        };
+      }
       return token;
     },
+    async redirect({ url, baseUrl }: any) {
+      return baseUrl;
+    },
     async session({ session, token }: any) {
-      const user = await db.user.findUnique({
-        where: {
-          id: token.sub,
-        },
-      });
       if (token) {
-        session.accessToken = token.accessToken;
+        const user = await db.user.findUnique({
+          where: {
+            id: token.sub,
+          },
+        });
+        
         session.user.id = token.sub;
-        session.user.admin = user?.admin;
+        session.accessToken = token.accessToken;
+        session.user.admin = user?.admin || false;
       }
       return session;
     },
   },
-};
-interface RateLimiter {
-  timestamps: Date[];
-}
-const userRateLimits = new Map<string, RateLimiter>();
-
-export const rateLimit = (userId: string, rateLimitCount: number, rateLimitInterval: number): boolean => {
-  const now = new Date();
-  const userLimiter = userRateLimits.get(userId) ?? { timestamps: [] };
-
-  userLimiter.timestamps = userLimiter.timestamps.filter(
-    (timestamp) => now.getTime() - timestamp.getTime() < rateLimitInterval
-  );
-
-  if (userLimiter.timestamps.length >= rateLimitCount) {
-    return false; // Rate limit exceeded
-  }
-
-  userLimiter.timestamps.push(now);
-  userRateLimits.set(userId, userLimiter);
-  return true;
 };
