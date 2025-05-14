@@ -1,9 +1,12 @@
 import React from 'react'
+import AdminPageForm from '../../components/admin/PageForm'
 
-function Admin() {
+function AdminPage() {
   return (
-    <div className='text-white text-center font-semibold text-3xl'>This is an admin page. Add new notion blog document ids to it</div>
+    <div className='h-screen'>
+     <AdminPageForm />
+    </div>
   )
 }
 
-export default Admin
+export default AdminPage

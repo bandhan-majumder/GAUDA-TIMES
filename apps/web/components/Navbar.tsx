@@ -34,7 +34,8 @@ export const Appbar = () => {
           {(status === "unauthenticated") ? (
             <Button
               size="lg"
-              className="p-2 rounded-xl text-sm  cursor-pointer transform hover:scale-125 hover:opacity-80 transition ease-out duration-300"
+              variant={"default"}
+              className="p-2 bg-[#665499] hover:bg-[#464472] text-white rounded-xl  cursor-pointer transform hover:scale-125 hover:opacity-80 transition ease-out duration-300 text-md"
               onClick={async () => {
                 await signIn();
                 router.push('/');
