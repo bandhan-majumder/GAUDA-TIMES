@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   const session = await getServerSession(authOptions);
 
-  if (!session || !session.user || !session.user.admin){
+  if (!session || !session.user || !session.user.admin) {
     return NextResponse.json("Unauthorized", {
       status: 401,
     });
@@ -50,15 +50,8 @@ export async function PUT(request: Request) {
   });
 }
 
-// get all blogs based on pagination
+// get all blogs based on pagination.
 export async function GET(request: Request) {
-  const session = await getServerSession(authOptions);
-
-  if (!session || !session.user || !session.user.admin) {
-    return NextResponse.json("Unauthorized", {
-      status: 401,
-    });
-  }
   const url = new URL(request.url);
   const take = parseInt(url.searchParams.get("take") || "10", 10);
   const skip = parseInt(url.searchParams.get("skip") || "0", 10);
@@ -71,7 +64,9 @@ export async function GET(request: Request) {
     });
   }
 
-  return NextResponse.json(allBlogs, {
+  return NextResponse.json({
+    allBlogs
+  }, {
     status: 200,
   });
 }

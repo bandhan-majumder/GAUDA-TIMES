@@ -1,12 +1,13 @@
 "use client";
-import { MapPin, Phone, Mail, Copy } from "lucide-react";
+import { MapPin, Phone, Mail, Copy, Facebook, X, Twitter, Instagram, Github } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 const Footer = () => {
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("hello@studioalphonse.com");
-    alert("Email copied to clipboard!");
+    toast.success("Email copied to clipboard!");
   };
 
   return (
@@ -14,32 +15,24 @@ const Footer = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 sm:mb-10">
           <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-4 w-full md:w-auto mb-6 md:mb-0">
-            <div className="flex items-center justify-center w-12 h-12 border border-gray-600 rounded p-2">
-              <MapPin className="w-6 h-6" />
-            </div>
-            
-            <div className="flex items-center justify-center w-12 h-12 border border-gray-600 rounded p-2">
-              <Phone className="w-6 h-6" />
-            </div>
-            
             <div className="flex flex-grow sm:flex-grow-0 max-w-full">
               <div className="flex items-center px-2 sm:px-4 py-2 border border-gray-600 rounded-l truncate">
                 <Mail className="w-5 h-5 mr-1 sm:mr-2 flex-shrink-0" />
-                <span className="text-xs sm:text-base truncate">hello@studioalphonse.com</span>
+                <span className="text-xs sm:text-base truncate">akashmishra@gmail.com</span>
               </div>
-              <button 
+              <button
                 className="flex items-center justify-center px-2 sm:px-4 border border-l-0 border-gray-600 rounded-r"
                 onClick={handleCopyEmail}
               >
                 <Copy className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
-                <span className="text-xs sm:text-base">copier</span>
+                <span className="text-xs sm:text-base">copy</span>
               </button>
             </div>
           </div>
-          
+
           <div className="w-24 h-24 sm:w-32 sm:h-32 relative">
-            <Image 
-              src="/hero.png" 
+            <Image
+              src="/hero.png"
               alt="The Gauda Times Logo"
               fill
               sizes="(max-width: 640px) 6rem, 8rem"
@@ -48,7 +41,7 @@ const Footer = () => {
             />
           </div>
         </div>
-        
+
         <div className="mb-6 sm:mb-8 text-center md:text-left">
           <div className="text-4xl sm:text-6xl md:text-8xl font-bold text-gray-100 mb-0 sm:mb-2 leading-tight">
             THE
@@ -67,23 +60,26 @@ const Footer = () => {
 
         <div className="flex flex-col sm:flex-row justify-between items-center border-t border-gray-800 pt-4 gap-3">
           <div className="flex gap-4 mb-2 sm:mb-0 order-1 sm:order-1">
-            <Link href="https://x.com" className="hover:text-gray-300 text-sm sm:text-base">
-              Twitter
+            <Link target="_blank" href="https://x.com" className="hover:text-gray-300 text-sm sm:text-base">
+              <Twitter />
             </Link>
-            <Link href="https://facebook.com" className="hover:text-gray-300 text-sm sm:text-base">
-              Facebook
+            <Link target="_blank" href="https://facebook.com" className="hover:text-gray-300 text-sm sm:text-base">
+              <Facebook />
             </Link>
-            <Link href="https://instagram.com" className="hover:text-gray-300 text-sm sm:text-base">
-              Instagram
+            <Link target="_blank" href="https://instagram.com" className="hover:text-gray-300 text-sm sm:text-base">
+              <Instagram />
+            </Link>
+            <Link target="_blank" href="https://github.com/bandhan-majumder/GAUDA-TIMES" className="hover:text-gray-300 text-sm sm:text-base">
+              <Github />
             </Link>
           </div>
-          
+
           <div className="mb-2 sm:mb-0 order-3 sm:order-2">
             <Link href="/legal" className="hover:text-gray-300 text-sm sm:text-base">
               made with ❤️ by Bandhan
             </Link>
           </div>
-          
+
           <div className="text-xs sm:text-sm text-gray-400 order-2 sm:order-3">
             THE GAUDA TIMES © 2025
           </div>

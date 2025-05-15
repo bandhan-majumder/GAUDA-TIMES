@@ -43,11 +43,12 @@ export default function UserAccountDropDown() {
                     </div>
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#4F4D6F] text-white shadow-lg shadow-neutral-600/5 backdrop-blur-lg border p-3 rounded-2xl w-[200px]">
+            <DropdownMenuContent className="text-white shadow-lg shadow-neutral-600/5 backdrop-blur-lg border p-3 rounded-2xl w-[200px]">
                 <DropdownMenuLabel className="text-center">
                     Account
                 </DropdownMenuLabel>
-                <DropdownMenuItem className="focus:bg-secondary/25 hover:bg-destructive/15 flex cursor-pointer items-center space-x-3 rounded-lg p-3 transition-all duration-200 hover:shadow-md text-red-500"
+                <DropdownMenuItem className="cursor-pointer p-3 text-red-500 outline-none border-none hover:text-red-700
+                "
                     onClick={async () => {
                         await signOut();
                         router.push("/");
