@@ -4,6 +4,10 @@ import './globals.css';
 import "@repo/tailwind-config/styles";
 import { Providers } from "../components/Providers";
 
+// core styles shared by all of react-notion-x (required)
+import "react-notion-x/src/styles.css";
+
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -24,9 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <Providers>
-        <body className={`${geistSans.variable} ${geistMono.variable} bg-gradient-to-b from-[#1D222E] to-[#22252c]`}>
+        <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-neutral-50 dark:bg-neutral-950 overflow-x-hidden antialiased`}>
           {children}
         </body>
       </Providers>
