@@ -1,12 +1,6 @@
 "use server";
 import db from "@repo/db/client";
-
-interface IBlogData {
-    title: string
-    description: string
-    notionDocsId: string
-    image: string
-}
+import { IBlogDetails } from "../types";
 
 export async function getBlog(blogId: string | null) {
     if (!blogId) {
@@ -30,7 +24,7 @@ export async function getBlog(blogId: string | null) {
     }
 }
 
-export async function getAllBlogs() {
+export async function getAllBlogs({ take, skip, cursor }: { take?: number; skip?: number; cursor?: string } = {}) {
     // TODO: add cache
     
     try {
@@ -38,6 +32,10 @@ export async function getAllBlogs() {
             orderBy: {
                 createdAt: "desc",
             },
+            // pagination
+            take: take || 10,
+            skip: skip || 0,
+            cursor: cursor ? { id: cursor } : undefined,
         });
     
         // TODO: set cache
@@ -49,28 +47,28 @@ export async function getAllBlogs() {
     }
 }
 
-export async function updateBlog(blogId: string, data: IBlogData) {
+export async function updateBlog(data: IBlogDetails) {
     try {
         const blog = await db.blogs.update({
             where: {
-                id: blogId,
+                notionDocsId: data.notionDocsId,
             },
             data,
         });
         return blog;
-    } catch (e) {
-        return null;
+    } catch (e: any) {
+       throw new Error("Error updating blog:", e);
     }
 }
 
-export async function createBlog(data: IBlogData) {
+export async function createBlog(data: IBlogDetails) {
     try {
         const blog = await db.blogs.create({
             data,
         });
         return blog;
-    } catch (e) {
-        return null;
+    } catch (e: any) {
+        throw new Error("Error creating blog:", e);
     }
 }
 

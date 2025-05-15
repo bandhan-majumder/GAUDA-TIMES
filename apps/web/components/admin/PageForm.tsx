@@ -1,8 +1,5 @@
 "use client";
-import { Button } from "@repo/ui"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui"
-import { Input } from "@repo/ui"
-import { Label } from "@repo/ui"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui"
 import { PageForm } from "./AddPageForm";
 
@@ -21,7 +18,7 @@ export default function AdminPage() {
                         <CardDescription>Add a notion database to your existing collection</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-2">
-                        <PageForm mode="add" onSubmit={() => { }} />
+                        <PageForm mode="add" />
                     </CardContent>
                 </Card>
             </TabsContent>
@@ -32,7 +29,7 @@ export default function AdminPage() {
                         <CardDescription>Update an existing notion integration</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-2">
-                        <PageForm mode="edit" onSubmit={() => { }} />
+                        <PageForm mode="edit" />
                     </CardContent>
                 </Card>
             </TabsContent>

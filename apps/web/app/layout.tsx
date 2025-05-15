@@ -6,6 +6,7 @@ import { Providers } from "../components/Providers";
 
 // core styles shared by all of react-notion-x (required)
 import "react-notion-x/src/styles.css";
+import { Toaster } from "react-hot-toast";
 
 
 const geistSans = localFont({
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <Providers>
         <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-neutral-50 dark:bg-neutral-950 overflow-x-hidden antialiased`}>
+          <Toaster />
           {children}
         </body>
       </Providers>

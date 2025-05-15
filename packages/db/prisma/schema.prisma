@@ -63,8 +63,8 @@ model Blogs {
   id           String   @id @default(cuid())
   title        String
   description  String
-  notionDocsId String
-  image        String   @default("")
+  notionDocsId String   @unique
+  imageURL     String   @default("")
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
