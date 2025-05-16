@@ -22,6 +22,7 @@ import BlogHighlight from "./BlogHighlight";
 import { BlogSkeleton } from "./BlogSkeleton";
 import axios from "axios";
 import NoBlogFound from "./NoBlogFound";
+import BlogLoadError from "./BlogLoadError";
 
 interface IBlog {
     id: string;
@@ -40,7 +41,7 @@ export function HomeBlogs() {
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    
+
     let totalBlogs = 0;
 
     // Number of items to fetch per page
@@ -52,14 +53,14 @@ export function HomeBlogs() {
                 setLoading(true);
                 const skip = (currentPage - 1) * itemsPerPage;
                 const response = await axios.get(`/api/blog?sortBy=${sortBy}&skip=${skip}&limit=${itemsPerPage}`);
-                
+
                 if (!response.data) {
                     return <NoBlogFound />;
                 }
-                
+
                 const data = response.data;
                 setBlogs(data.allBlogs || []);
-                
+
                 // Update total blogs count and calculate total pages
                 if (data.totalCount) {
                     totalBlogs = data.totalCount;
@@ -75,7 +76,7 @@ export function HomeBlogs() {
                 setLoading(false);
             }
         };
-        
+
         fetchBlogs();
     }, [sortBy, currentPage]);
 
@@ -88,7 +89,7 @@ export function HomeBlogs() {
     const getPaginationNumbers = () => {
         const pages = [];
         const maxPagesToShow = 5;
-        
+
         if (totalPages <= maxPagesToShow) {
             // Show all pages if there are 5 or fewer
             for (let i = 1; i <= totalPages; i++) {
@@ -97,29 +98,29 @@ export function HomeBlogs() {
         } else {
             // Always show the first page
             pages.push(1);
-            
+
             // Show ellipsis if current page is more than 3
             if (currentPage > 3) {
                 pages.push(-1); // -1 represents ellipsis
             }
-            
+
             // Show pages around current page
             const startPage = Math.max(2, currentPage - 1);
             const endPage = Math.min(totalPages - 1, currentPage + 1);
-            
+
             for (let i = startPage; i <= endPage; i++) {
                 pages.push(i);
             }
-            
+
             // Show ellipsis if current page is less than totalPages - 2
             if (currentPage < totalPages - 2) {
                 pages.push(-2); // -2 represents ellipsis
             }
-            
+
             // Always show the last page
             pages.push(totalPages);
         }
-        
+
         return pages;
     };
 
@@ -156,7 +157,7 @@ export function HomeBlogs() {
                         <BlogSkeleton />
                     </>
                 ) : error && blogs.length === 0 ? (
-                    <div className="text-center py-8 text-destructive">{error}</div>
+                    <BlogLoadError />
                 ) : blogs.length === 0 ? (
                     <NoBlogFound />
                 ) : (
@@ -174,19 +175,19 @@ export function HomeBlogs() {
                     ))
                 )}
             </div>
-            
+
             {!loading && blogs.length > 0 && totalPages > 1 && (
                 <div>
                     <Pagination className="mb-8 text-white">
                         <PaginationContent>
                             <PaginationItem>
-                                <PaginationPrevious 
-                                    size={"lg"} 
+                                <PaginationPrevious
+                                    size={"lg"}
                                     className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                                     onClick={() => handlePageChange(currentPage - 1)}
                                 />
                             </PaginationItem>
-                            
+
                             {getPaginationNumbers().map((pageNum, index) => (
                                 <React.Fragment key={index}>
                                     {pageNum === -1 || pageNum === -2 ? (
@@ -195,8 +196,8 @@ export function HomeBlogs() {
                                         </PaginationItem>
                                     ) : (
                                         <PaginationItem>
-                                            <PaginationLink 
-                                                size={"lg"} 
+                                            <PaginationLink
+                                                size={"lg"}
                                                 isActive={currentPage === pageNum}
                                                 onClick={() => handlePageChange(pageNum)}
                                                 className="cursor-pointer"
@@ -207,10 +208,10 @@ export function HomeBlogs() {
                                     )}
                                 </React.Fragment>
                             ))}
-                            
+
                             <PaginationItem>
-                                <PaginationNext 
-                                    size={"lg"} 
+                                <PaginationNext
+                                    size={"lg"}
                                     className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                                     onClick={() => handlePageChange(currentPage + 1)}
                                 />
