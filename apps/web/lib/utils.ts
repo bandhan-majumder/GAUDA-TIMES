@@ -1,13 +1,19 @@
 "use server";
 import db from "@repo/db/client";
 import { IBlogDetails } from "../types";
+// import { cache } from "@repo/db/cache"; // for future optimization usage
 
 export async function getBlog(blogId: string | null) {
     if (!blogId) {
         return null;
     }
 
-    // TODO: add cache
+    /*
+    const value = await cache.get("getBlog", [blogId.toString()]);
+    if (value) {
+        return value;
+    }
+        */
 
     try {
         const blog = await db.blogs.findUnique({
@@ -15,7 +21,7 @@ export async function getBlog(blogId: string | null) {
                 id: blogId,
             },
         });
-
+        // await cache.set("getBlog", [blogId.toString()], blog);
         return blog;
     } catch (err) {
         return null;
@@ -33,8 +39,14 @@ export async function getAllBlogs({
     cursor?: string,
     orderBy?: "desc" | "asc"
 } = {}) {
-    console.log("Take no is: ", take);
-
+    /*
+    const cacheKey = ["getAllBlogs", take.toString(), skip.toString(), orderBy];
+    const cachedData = await cache.get("getAllBlogs", cacheKey);
+    if (cachedData) {
+        return cachedData;
+    }
+        */
+    
     try {
         const totalCount = await db.blogs.count();
         const allBlogs = await db.blogs.findMany({
@@ -46,10 +58,13 @@ export async function getAllBlogs({
             cursor: cursor ? { id: cursor } : undefined,
         });
 
-        return {
+        const result = {
             allBlogs,
             totalCount
         };
+
+        // await cache.set("getAllBlogs", cacheKey, result);
+        return result;
     } catch (e) {
         console.error("Error fetching blogs:", e);
         return {
@@ -67,6 +82,10 @@ export async function updateBlog(data: IBlogDetails) {
             },
             data,
         });
+        
+        // await cache.evict("getAllBlogs", []);
+        // await getAllBlogs();
+
         return blog;
     } catch (e: any) {
         throw new Error("Error updating blog:", e);
