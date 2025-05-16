@@ -14,13 +14,15 @@ function BlogHighlight({ id, title, description, image, createdAt }: {
 
   useEffect(() => {
     const validateImage = async () => {
-      try {
-        const isValid = await checkImage(image);
-        if (isValid) {
-          setImageURL(image);
+      if (image) { // if image is not an empty string
+        try {
+          const isValid = await checkImage(image);
+          if (isValid) {
+            setImageURL(image);
+          }
+        } catch (error) {
+          console.error("Error validating image:", error);
         }
-      } catch (error) {
-        console.error("Error validating image:", error);
       }
     };
     validateImage();
@@ -28,7 +30,7 @@ function BlogHighlight({ id, title, description, image, createdAt }: {
 
   return (
     <div className="w-full mx-auto px-2 sm:px-4 mb-4 sm:mb-6">
-      <Link href={`http://localhost:3000/blog/${id}`} target="_blank" className="block">
+      <Link href={`/blog/${id}`} target="_blank" className="block">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4 shadow-lg shadow-neutral-600/10 p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl md:rounded-3xl bg-[#161616] text-white hover:bg-[#1c1c1c] transition-colors">
           {/* Image - Full width on mobile, fixed width on larger screens */}
           <div className="flex-shrink-0 flex justify-center xs:justify-start">

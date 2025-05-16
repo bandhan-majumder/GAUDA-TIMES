@@ -1,14 +1,11 @@
 "use client";
-import { MapPin, Phone, Mail, Copy, Facebook, X, Twitter, Instagram, Github } from "lucide-react";
+
+import { Mail, Copy, Facebook, X, Twitter, Instagram, Github } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import toast from "react-hot-toast";
+import { handleCopyEmail } from "../lib/copyClipBoard";
 
 const Footer = () => {
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText("hello@studioalphonse.com");
-    toast.success("Email copied to clipboard!");
-  };
 
   return (
     <footer className="bg-gray-900 py-8 sm:py-12 px-4 text-gray-100">
