@@ -17,12 +17,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@repo/ui"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BlogHighlight from "./BlogHighlight";
 import { BlogSkeleton } from "./BlogSkeleton";
-import axios from "axios";
 import NoBlogFound from "./NoBlogFound";
 import BlogLoadError from "./BlogLoadError";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 interface IBlog {
     id: string;
@@ -36,49 +37,23 @@ interface IBlog {
 
 export function HomeBlogs() {
     const [sortBy, setSortBy] = useState<"asc" | "desc">("desc");
-    const [blogs, setBlogs] = useState<IBlog[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-
-    let totalBlogs = 0;
-
+    
     // Number of items to fetch per page
     const itemsPerPage = 10;
+    const skip = (currentPage - 1) * itemsPerPage;
 
-    useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-                setLoading(true);
-                const skip = (currentPage - 1) * itemsPerPage;
-                const response = await axios.get(`/api/blog?sortBy=${sortBy}&skip=${skip}&limit=${itemsPerPage}`);
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ['blogs', sortBy, skip, itemsPerPage],
+        queryFn: async () => {
+            const response = await axios.get(`/api/blog?sortBy=${sortBy}&skip=${skip}&limit=${itemsPerPage}`);
+            return response.data;
+        }
+    });
 
-                if (!response.data) {
-                    return <NoBlogFound />;
-                }
-
-                const data = response.data;
-                setBlogs(data.allBlogs || []);
-
-                // Update total blogs count and calculate total pages
-                if (data.totalCount) {
-                    totalBlogs = data.totalCount;
-                    console.log("Total blogs:", data.totalCount);
-                    setTotalPages(Math.ceil(data.totalCount / itemsPerPage));
-                    console.log("Total pages:", Math.ceil(data.totalCount / itemsPerPage));
-                }
-            } catch (err) {
-                console.error("Error fetching blogs:", err);
-                setError("Failed to load blogs. Please try again later.");
-                setBlogs([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchBlogs();
-    }, [sortBy, currentPage]);
+    const blogs = data?.allBlogs || [];
+    const totalBlogs = data?.totalCount || 0;
+    const totalPages = Math.ceil(totalBlogs / itemsPerPage);
 
     const handlePageChange = (page: number) => {
         if (page < 1 || page > totalPages) return;
@@ -150,18 +125,18 @@ export function HomeBlogs() {
             </div>
 
             <div className="space-y-2 w-full max-w-4xl my-10">
-                {loading ? (
+                {isLoading ? (
                     <>
                         <BlogSkeleton />
                         <BlogSkeleton />
                         <BlogSkeleton />
                     </>
-                ) : error && blogs.length === 0 ? (
+                ) : isError ? (
                     <BlogLoadError />
                 ) : blogs.length === 0 ? (
                     <NoBlogFound />
                 ) : (
-                    blogs.map((blog) => (
+                    blogs.map((blog: IBlog) => (
                         <div className="w-full" key={blog.notionDocsId || blog.id}>
                             <BlogHighlight
                                 key={blog.notionDocsId || blog.id}
@@ -176,7 +151,7 @@ export function HomeBlogs() {
                 )}
             </div>
 
-            {!loading && blogs.length > 0 && totalPages > 1 && (
+            {!isLoading && blogs.length > 0 && totalPages > 1 && (
                 <div>
                     <Pagination className="mb-8 text-white">
                         <PaginationContent>

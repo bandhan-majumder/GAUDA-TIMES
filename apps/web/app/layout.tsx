@@ -3,16 +3,14 @@ import localFont from "next/font/local";
 import './globals.css';
 import "@repo/tailwind-config/styles";
 import { Providers } from "../components/Providers";
-
 // core styles shared by all of react-notion-x (required)
 import "react-notion-x/src/styles.css";
-import { Toaster } from "react-hot-toast";
-
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -30,12 +28,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Providers>
-        <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-neutral-50 dark:bg-[#262633] overflow-x-hidden antialiased`}>
-          <Toaster />
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-neutral-50 dark:bg-[#262633] overflow-x-hidden antialiased`}>
+        <Providers>
           {children}
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
   );
 }
