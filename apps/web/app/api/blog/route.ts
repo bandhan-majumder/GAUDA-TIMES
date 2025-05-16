@@ -59,16 +59,16 @@ export async function GET(request: Request) {
   const sortBy = url.searchParams.get("sortBy");
   const orderBy: "asc" | "desc" = sortBy === "asc" || sortBy === "desc" ? sortBy : "desc";
 
-  const allBlogs = await getAllBlogs({ take, skip, cursor, orderBy });
-  if (!allBlogs || allBlogs.length === 0) {
+  const {allBlogs, totalCount} = await getAllBlogs({ take, skip, cursor, orderBy });
+  if (!allBlogs || totalCount === 0) {
     return NextResponse.json("No blogs found", {
       status: 404,
     });
   }
 
-  console.log("allBlogs", allBlogs);
   return NextResponse.json({
-    allBlogs
+    allBlogs,
+    totalCount
   }, {
     status: 200,
   });

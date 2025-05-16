@@ -22,21 +22,40 @@ export async function getBlog(blogId: string | null) {
     }
 }
 
-export async function getAllBlogs({ take, skip, cursor, orderBy = "desc" }: { take?: number; skip?: number; cursor?: string, orderBy?: "desc" | "asc" } = {}) {
+export async function getAllBlogs({
+    take = 10,
+    skip = 0,
+    cursor,
+    orderBy = "desc"
+}: {
+    take?: number;
+    skip?: number;
+    cursor?: string,
+    orderBy?: "desc" | "asc"
+} = {}) {
+    console.log("Take no is: ", take);
+
     try {
+        const totalCount = await db.blogs.count();
         const allBlogs = await db.blogs.findMany({
             orderBy: {
                 createdAt: orderBy,
             },
-            take: take || 10,
+            take: take,
             skip: skip || 0,
             cursor: cursor ? { id: cursor } : undefined,
         });
 
-        return allBlogs;
-
+        return {
+            allBlogs,
+            totalCount
+        };
     } catch (e) {
-        return [];
+        console.error("Error fetching blogs:", e);
+        return {
+            allBlogs: [],
+            totalCount: 0
+        };
     }
 }
 
