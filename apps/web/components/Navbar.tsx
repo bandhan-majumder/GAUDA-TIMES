@@ -30,7 +30,9 @@ export const Appbar = () => {
         </Link>
 
         <div className="flex items-center gap-4">
-          {/* <ModeToggle /> */}
+          <div className="bg-slate-500 p-2 rounded-2xl">
+            <ModeToggle />
+          </div>
           {(status === "unauthenticated") ? (
             <Button
               size="lg"

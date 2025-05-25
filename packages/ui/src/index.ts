@@ -11,3 +11,4 @@ export * from '../components/ui/button';
 export * from '../components/ui/tabs';
 export * from '../components/ui/select';
 export * from '../components/ui/pagination';
+export * from '../components/ui/switch';
