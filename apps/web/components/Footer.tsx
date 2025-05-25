@@ -16,7 +16,7 @@ const Footer = () => {
             <div className="flex flex-grow sm:flex-grow-0 max-w-full">
               <div className="flex items-center px-2 sm:px-4 py-2 border border-gray-600 rounded-l truncate">
                 <Mail className="w-5 h-5 mr-1 sm:mr-2 flex-shrink-0" />
-                <span className="text-xs sm:text-base truncate">akashmishra@gmail.com</span>
+                <span className="text-xs sm:text-base truncate">narayan324mishra@gmail.com</span>
               </div>
               <button
                 className="flex items-center justify-center px-2 sm:px-4 border border-l-0 border-gray-600 rounded-r"
@@ -30,7 +30,7 @@ const Footer = () => {
 
           <div className="w-24 h-24 sm:w-32 sm:h-32 relative">
             <Image
-              src="/hero.png"
+              src="/about.jpg"
               alt="The Gauda Times Logo"
               fill
               sizes="(max-width: 640px) 6rem, 8rem"

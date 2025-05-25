@@ -1,36 +1,125 @@
 "use client";
 
-import {
-    Command,
-    CommandDialog,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    CommandSeparator,
-    CommandShortcut,
-} from "@repo/ui"
+import React, { useState, useCallback, useEffect } from 'react'
+import { Search } from 'lucide-react'
 
-import React from 'react'
+const sampleData = [
+  {
+    id: 1,
+    title: 'React Official Documentation',
+    url: 'https://reactjs.org/',
+  },
+  {
+    id: 2,
+    title: 'Mozilla Developer Network (MDN)',
+    url: 'https://developer.mozilla.org/',
+  },
+  {
+    id: 3,
+    title: 'Stack Overflow',
+    url: 'https://stackoverflow.com/',
+  },
+  {
+    id: 4,
+    title: 'GitHub',
+    url: 'https://github.com/',
+  },
+  {
+    id: 5,
+    title: 'npm',
+    url: 'https://www.npmjs.com/',
+  },
+]
 
-function SearchBar() {
-    return (
-        <div className="mt-10">
-            <Command className="max-w-[400px] mx-auto mt-10 border-none outline-none">
-                <CommandInput placeholder="Type a command or search..." className="bg-[#091127] border-none outline-none p-5 rounded-md text-white" />
-                <CommandList className="text-white">
-                <CommandEmpty>No results found.</CommandEmpty>
-                <CommandGroup heading="Suggestions">
-                    <CommandItem>Calendar</CommandItem>
-                    <CommandItem>Search Emoji</CommandItem>
-                    <CommandItem>Calculator</CommandItem>
-                </CommandGroup>
-                <CommandSeparator />
-            </CommandList>
-            </Command>
+const GoogleSearchBar = () => {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+
+  const debounce = (func, delay) => {
+    let timeoutId
+    return (...args) => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => func(...args), delay)
+    }
+  }
+
+  const handleSearch = useCallback(
+    debounce((term) => {
+      if (term.trim() === '') {
+        setSearchResults([])
+      } else {
+        const results = sampleData.filter((item) =>
+          item.title.toLowerCase().includes(term.toLowerCase()),
+        )
+        setSearchResults(results)
+      }
+    }, 300),
+    [],
+  )
+
+  useEffect(() => {
+    handleSearch(searchTerm)
+  }, [searchTerm, handleSearch])
+
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value)
+  }
+
+  // Todo for you: Add the below code to the GoogleSearchBar component:
+  return (
+    <div className="flex h-auto flex-col items-cente p-4">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="mb-8 w-full max-w-2xl"
+      >
+        <div className="relative">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleInputChange}
+            className="w-full rounded-full border border-gray-200 px-5 py-3 pr-20 text-base shadow-md transition-shadow duration-200 hover:shadow-lg focus:border-gray-300 focus:outline-none"
+            placeholder="search blogs.."
+          />
+          <div className="absolute right-0 top-0 mr-4 mt-3 flex items-center">
+            <button
+              type="button"
+              className="mr-3 text-gray-400 hover:text-gray-600"
+              onClick={() =>
+                alert(
+                  'Voice search is unsupported in this demo.\nTry implementing this feature yourself 🙂',
+                )
+              }
+            >
+            </button>{' '}
+            <button type="submit" className="text-blue-500 hover:text-blue-600">
+              <Search size={20} />{' '}
+            </button>{' '}
+          </div>{' '}
+        </div>{' '}
+      </form>{' '}
+      {searchResults.length > 0 && (
+        <div className="w-full max-w-2xl rounded-lg bg-[#1C1C1C] text-white p-4 shadow-md">
+          <h2 className="mb-4 text-xl font-bold"> Search Results: </h2>{' '}
+          <ul>
+            {' '}
+            {searchResults.map((result) => (
+              <li key={result.id} className="mb-2">
+                <a
+                  href={result.url}
+                  className="text-blue-600 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {' '}
+                  {result.title}{' '}
+                </a>{' '}
+              </li>
+            ))}{' '}
+          </ul>{' '}
         </div>
-    )
+      )}{' '}
+    </div>
+  )
 }
 
-export default SearchBar
+export default GoogleSearchBar

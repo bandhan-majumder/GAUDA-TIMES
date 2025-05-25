@@ -18,13 +18,13 @@ export const Appbar = () => {
       <div className="flex w-[90vw] justify-between mx-auto shadow-lg shadow-neutral-600/5 backdrop-blur-lg border border-gray-600 p-3 rounded-2xl md:w-[50vw]">
         <Link href={"/"} className="flex items-center gap-4 cursor-pointer">
           <Image
-            src={'/hero.png'}
+            src={'/about.jpg'}
             alt="Logo"
             width={300}
             height={200}
             className="rounded-full size-10"
           />
-          <span className="text-lg md:text-2xl font-bold tracking-tight text-red-400 text-foreground hidden md:block">
+          <span className="text-lg md:text-2xl font-bold tracking-tight text-[#403E6A] text-foreground hidden md:block">
             The Gauda Times
           </span>
         </Link>
