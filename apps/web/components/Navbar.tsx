@@ -24,7 +24,7 @@ export const Appbar = () => {
             height={200}
             className="rounded-full size-10"
           />
-          <span className="text-lg md:text-2xl font-bold tracking-tight text-[#403E6A] text-foreground hidden md:block">
+          <span className="text-lg md:text-2xl font-bold tracking-tight text-[#686597] text-foreground hidden md:block">
             The Gauda Times
           </span>
         </Link>

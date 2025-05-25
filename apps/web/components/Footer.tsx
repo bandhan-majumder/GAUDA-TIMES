@@ -1,7 +1,8 @@
 "use client";
 
-import { Mail, Copy, Facebook, X, Twitter, Instagram, Github } from "lucide-react";
+import { Mail, Copy, Facebook, Twitter, Instagram, Github } from "lucide-react";
 import { IoLogoWhatsapp } from "react-icons/io";
+import { FaTelegramPlane } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { handleCopyEmail } from "../lib/copyClipBoard";
@@ -69,6 +70,9 @@ const Footer = () => {
             </Link>
             <Link target="_blank" href="https://instagram.com" className="hover:text-gray-300 text-sm sm:text-base">
               <Instagram />
+            </Link>
+            <Link target="_blank" href="https://github.com/bandhan-majumder/GAUDA-TIMES" className="hover:text-gray-300 text-sm sm:text-base">
+              <FaTelegramPlane size={23} />
             </Link>
             <Link target="_blank" href="https://github.com/bandhan-majumder/GAUDA-TIMES" className="hover:text-gray-300 text-sm sm:text-base">
               <Github />
