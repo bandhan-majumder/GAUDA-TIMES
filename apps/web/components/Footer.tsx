@@ -66,7 +66,7 @@ const Footer = () => {
               <Facebook />
             </Link>
             <Link target="_blank" href="https://github.com/bandhan-majumder/GAUDA-TIMES" className="hover:text-gray-300 text-sm sm:text-base">
-              <IoLogoWhatsapp size={23}/>
+              <IoLogoWhatsapp size={23} />
             </Link>
             <Link target="_blank" href="https://instagram.com" className="hover:text-gray-300 text-sm sm:text-base">
               <Instagram />
@@ -85,8 +85,15 @@ const Footer = () => {
             </Link>
           </div>
 
-          <div className="text-xs sm:text-sm text-gray-400 order-2 sm:order-3">
-            THE GAUDA TIMES © 2025
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-center justify-center sm:justify-end w-full sm:w-auto order-4 sm:order-4">
+            <Link href={"/about"} target="_blank">
+              <div className="text-xs sm:text-sm text-gray-400 order-2 sm:order-3 hover:text-gray-200 cursor-pointer">
+                About Us
+              </div>
+            </Link>
+            <div className="text-xs sm:text-sm text-gray-400 order-2 sm:order-3">
+              THE GAUDA TIMES © 2025
+            </div>
           </div>
         </div>
       </div>

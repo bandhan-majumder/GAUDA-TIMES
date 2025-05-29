@@ -29,9 +29,9 @@ export async function getBlog(blogId: string | null) {
 }
 
 export async function getAllBlogs({
-    take = 10,
+    take = 10000000, // Default to a large number to fetch all blogs
     skip = 0,
-    cursor,
+    cursor = undefined,
     orderBy = "desc"
 }: {
     take?: number;
@@ -47,6 +47,7 @@ export async function getAllBlogs({
     }
         */
     
+    console.log("Fetching all blogs with params:", { take, skip, cursor, orderBy });
     try {
         const totalCount = await db.blogs.count();
         const allBlogs = await db.blogs.findMany({

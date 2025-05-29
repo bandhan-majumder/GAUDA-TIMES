@@ -1,77 +1,112 @@
 "use client";
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, FormEvent, ChangeEvent } from 'react'
 import { Search } from 'lucide-react'
+import { getAllBlogs } from '../lib/utils';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 
-const sampleData = [
-  {
-    id: 1,
-    title: 'React Official Documentation',
-    url: 'https://reactjs.org/',
-  },
-  {
-    id: 2,
-    title: 'Mozilla Developer Network (MDN)',
-    url: 'https://developer.mozilla.org/',
-  },
-  {
-    id: 3,
-    title: 'Stack Overflow',
-    url: 'https://stackoverflow.com/',
-  },
-  {
-    id: 4,
-    title: 'GitHub',
-    url: 'https://github.com/',
-  },
-  {
-    id: 5,
-    title: 'npm',
-    url: 'https://www.npmjs.com/',
-  },
-]
+// Type definitions
+interface SearchItem {
+  id: number;
+  title: string;
+  description: string;
+}
 
-const GoogleSearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [searchResults, setSearchResults] = useState([])
+interface BlogsResponse {
+  allBlogs: SearchItem[];
+}
 
-  const debounce = (func, delay) => {
-    let timeoutId
-    return (...args) => {
+type DebouncedFunction<T extends (...args: any[]) => any> = (
+  ...args: Parameters<T>
+) => void;
+
+const GoogleSearchBar: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [searchResults, setSearchResults] = useState<SearchItem[]>([])
+
+  // Fetch all blogs using React Query
+  const { data: blogsData, isLoading, error } = useQuery({
+    queryKey: ['allBlogs'],
+    queryFn: () => getAllBlogs({ take: 1000000, skip: 0, orderBy: 'desc' }),
+    staleTime: 1000 * 60 * 60, // 1 hour
+  });
+
+  // Debounce function with proper typing
+  const debounce = <T extends (...args: any[]) => any>(
+    func: T,
+    delay: number
+  ): DebouncedFunction<T> => {
+    let timeoutId: NodeJS.Timeout
+    return (...args: Parameters<T>) => {
       clearTimeout(timeoutId)
       timeoutId = setTimeout(() => func(...args), delay)
     }
   }
 
+  // Search handler with proper typing
   const handleSearch = useCallback(
-    debounce((term) => {
+    debounce((term: string): void => {
       if (term.trim() === '') {
         setSearchResults([])
-      } else {
-        const results = sampleData.filter((item) =>
-          item.title.toLowerCase().includes(term.toLowerCase()),
+      } else if (blogsData?.allBlogs) {
+        console.log('blogsData: ', blogsData?.allBlogs);
+        //@ts-ignore
+        const results: BlogsResponse = blogsData.allBlogs.filter((item: SearchItem) =>
+          item.title.toLowerCase().includes(term.toLowerCase()) ||
+          item.description.toLowerCase().includes(term.toLowerCase())
         )
+        //@ts-ignore
         setSearchResults(results)
       }
     }, 300),
-    [],
+    [blogsData?.allBlogs], // Add blogsData as dependency
   )
 
   useEffect(() => {
     handleSearch(searchTerm)
   }, [searchTerm, handleSearch])
 
-  const handleInputChange = (e) => {
+  // Event handlers with proper typing
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(e.target.value)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
+    // You can add additional submit logic here if needed
+  }
+
+  const handleVoiceSearch = (): void => {
+    alert(
+      'Voice search is unsupported in this demo.\nTry implementing this feature yourself 🙂',
+    )
+  }
+
+  // Handle loading and error states
+  if (isLoading) {
+    return (
+      <div className="flex h-auto flex-col items-center p-4">
+        <div className="w-full max-w-2xl mb-8">
+          <div className="text-center text-gray-500">Loading blogs...</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-auto flex-col items-center p-4">
+        <div className="w-full max-w-2xl mb-8">
+          <div className="text-center text-red-500">Error loading blogs</div>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="flex h-auto flex-col items-center p-4">
       <div className="relative w-full max-w-2xl mb-8">
-        <div onSubmit={handleSubmit} className="w-full">
+        <form onSubmit={handleSubmit} className="w-full">
           <div className="relative">
             <input
               type="text"
@@ -84,38 +119,48 @@ const GoogleSearchBar = () => {
               <button
                 type="button"
                 className="mr-3 text-gray-400 hover:text-gray-600"
-                onClick={() =>
-                  alert(
-                    'Voice search is unsupported in this demo.\nTry implementing this feature yourself 🙂',
-                  )
-                }
+                onClick={handleVoiceSearch}
+                aria-label="Voice search"
               >
+                {/* Voice search icon would go here */}
               </button>
-              <button type="button" className="text-blue-500 hover:text-blue-600">
+              <button
+                type="submit"
+                className="text-blue-500 hover:text-blue-600"
+                aria-label="Search"
+              >
                 <Search size={20} />
               </button>
             </div>
           </div>
-        </div>
+        </form>
 
         {/* Search Results Overlay */}
         {searchResults.length > 0 && (
           <div className="absolute top-full left-0 right-0 mt-2 rounded-lg bg-[#1C1C1C] text-white p-4 shadow-lg z-50 max-h-96 overflow-y-auto">
             <h2 className="mb-4 text-xl font-bold">Search Results:</h2>
             <ul>
-              {searchResults.map((result) => (
+              {searchResults.map((result: SearchItem) => (
                 <li key={result.id} className="mb-2">
-                  <a
-                    href={result.url}
-                    className="text-blue-400 hover:text-blue-300 hover:underline block py-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {result.title}
-                  </a>
+                  <Link href={`/blog/${result.id}`} className="text-blue-500 hover:underline">
+                    <div className="font-medium">{result.title}</div>
+                    {result.description && (
+                      <div className="text-sm text-gray-300 mt-1">
+                        {result.description.substring(0, 100)}...
+                      </div>
+                    )}
+                  </Link>
+
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* No results message */}
+        {searchTerm.trim() !== '' && searchResults.length === 0 && blogsData?.allBlogs && (
+          <div className="absolute top-full left-0 right-0 mt-2 rounded-lg bg-[#1C1C1C] text-white p-4 shadow-lg z-50">
+            <div className="text-gray-300">No blogs found for "{searchTerm}"</div>
           </div>
         )}
       </div>

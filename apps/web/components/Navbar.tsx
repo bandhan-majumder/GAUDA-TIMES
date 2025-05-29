@@ -3,9 +3,8 @@ import Link from "next/link";
 import { Button } from "@repo/ui";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
-// import UserAccountDropDown from "./UserAccountDropDown";
 import Image from "next/image";
-import { ModeToggle } from "./ModeToggle";
+// import { ModeToggle } from "./ModeToggle";
 import { useRouter } from "next/navigation";
 import UserAccountDropDown from "./UserAccountDropDown";
 
@@ -30,9 +29,9 @@ export const Appbar = () => {
         </Link>
 
         <div className="flex items-center gap-4">
-          <div className="bg-slate-500 p-2 rounded-2xl">
+          {/* <div className="bg-slate-500 p-2 rounded-2xl">
             <ModeToggle />
-          </div>
+          </div> */}
           {(status === "unauthenticated") ? (
             <Button
               size="lg"
