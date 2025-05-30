@@ -16,6 +16,7 @@ cd GAUDA-TIMES
 Go to each directory and setup the credentials according to the .env.sample file to a .env file.
 ```
 pnpm install
+cd packages/db && pnpm exec prisma generate && cd ../../
 pnpm dev
 ```
 
