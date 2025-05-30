@@ -6,9 +6,11 @@ import Link from 'next/link';
 
 const notion = new NotionAPI();
 
-async function BlogPage({ params }: { params: { blogId: string } }) {
+type Params = Promise<{ blogId: string }>
+
+async function BlogPage(props: { params: Params }) {
     let notionRecordMap: any = [];
-    const blogId = (await params).blogId
+    const blogId = (await props.params).blogId
     try{
         notionRecordMap = await notion.getPage(blogId);
 
