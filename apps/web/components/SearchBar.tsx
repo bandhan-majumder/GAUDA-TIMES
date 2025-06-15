@@ -8,6 +8,7 @@ import Link from 'next/link';
 // Type definitions
 interface SearchItem {
   id: number;
+  notionDocsId: string;
   title: string;
   description: string;
 }
@@ -61,7 +62,7 @@ const GoogleSearchBar: React.FC = () => {
 
       if (blogsData?.allBlogs) {
         //@ts-ignore
-        const results = blogsData.allBlogs.filter((item: SearchItem) =>
+        const results: BlogsResponse = blogsData.allBlogs.filter((item: SearchItem) =>
           item.title.toLowerCase().includes(term.toLowerCase()) ||
           item.description.toLowerCase().includes(term.toLowerCase())
         )
@@ -72,14 +73,13 @@ const GoogleSearchBar: React.FC = () => {
         setIsSearching(true)
       }
     }, 300),
-    [blogsData?.allBlogs]
+    [blogsData?.allBlogs], 
   )
 
   useEffect(() => {
     handleSearch(searchTerm)
   }, [searchTerm, handleSearch])
 
-  // Event handlers with proper typing
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(e.target.value)
   }
@@ -128,7 +128,7 @@ const GoogleSearchBar: React.FC = () => {
               {searchResults.map((result: SearchItem) => (
                 <li key={result.id} className="mb-3 last:mb-0">
                   <Link 
-                    href={`/blog/${result.id}`} 
+                    href={`/blog/${result.notionDocsId}`} 
                     className="block hover:bg-gray-800 rounded p-2 transition-colors"
                   >
                     <div className="font-medium text-blue-400 hover:text-blue-300">
